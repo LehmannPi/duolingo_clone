@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
+import { ClerkLoaded, ClerkLoading, UserButton } from '@clerk/nextjs';
+import { Loader } from 'lucide-react';
 import SidebarItem from './sidebar-item';
 
 type Props = {
@@ -34,6 +36,14 @@ export const Sidebar = ({ className }: Props) => {
         />
         <SidebarItem href="/quests" label="quests" iconSrc="/quests.svg" />
         <SidebarItem href="/shop" label="shop" iconSrc="/shop.svg" />
+      </div>
+      <div className="p-4">
+        <ClerkLoading>
+          <Loader className="h-5 w-5 text-muted-foreground animate-spin" />
+        </ClerkLoading>
+        <ClerkLoaded>
+          <UserButton afterSignOutUrl="/" />
+        </ClerkLoaded>
       </div>
     </div>
   );
