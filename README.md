@@ -1,8 +1,10 @@
-##
-
 ![Cover](./.github/cover.png)
 
-## Lingo - A Duolingo clone project
+## Lingo Project
+(Still on development)
+
+Lingo is a project of a language learning SaaS, similar to Duolingo.
+Users will be able to choose a language course, and have guided lessons with beautiful design, characters, audio & visual effects.
 
 To run the development server, open a terminal on the root folder and run:
 
@@ -14,9 +16,6 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Key features
-
-(Still on development)
-
 The finished project will have the following features:
 
 - 🌐 Next.js 14 & server actions
