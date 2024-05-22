@@ -1,23 +1,32 @@
+import { redirect } from 'next/navigation';
+
 import FeedWrapper from '@/components/feed-wrapper';
 import SickyWrapper from '@/components/sticky-wrapper';
 import { UserProgress } from '@/components/user-progress';
+import { getUserProgress } from '@/db/queries';
+
 import Header from './header';
 
-type Props = {};
+const LearnPage = async () => {
+  const userUserProgressPromise = getUserProgress();
 
-const LearnPage = () => {
+  const userProgress = await Promise.resolve(userUserProgressPromise);
+
+  // ! This clause enables us to not have to use optional chain in UserProgress props
+  if (!userProgress || !userProgress.activeCourse) return redirect('/courses');
+
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <SickyWrapper>
         <UserProgress
-          activeCourses={{ title: 'German', imageSrc: 'de.svg' }}
-          hearts={5}
-          points={100}
+          activeCourses={userProgress.activeCourse}
+          hearts={userProgress.hearts}
+          points={userProgress.points}
           hasActiveSubscription={false}
         />
       </SickyWrapper>
       <FeedWrapper>
-        <Header title="German" />
+        <Header title={userProgress.activeCourse.title} />
       </FeedWrapper>
     </div>
   );
