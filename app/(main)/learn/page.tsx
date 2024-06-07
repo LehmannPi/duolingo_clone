@@ -3,14 +3,18 @@ import { redirect } from 'next/navigation';
 import FeedWrapper from '@/components/feed-wrapper';
 import SickyWrapper from '@/components/sticky-wrapper';
 import { UserProgress } from '@/components/user-progress';
-import { getUserProgress } from '@/db/queries';
+import { getUnits, getUserProgress } from '@/db/queries';
 
 import Header from './header';
 
 const LearnPage = async () => {
+  const unitsDataPromise = getUnits();
   const userUserProgressPromise = getUserProgress();
 
-  const userProgress = await Promise.resolve(userUserProgressPromise);
+  const [units, userProgress] = await Promise.all([
+    unitsDataPromise,
+    userUserProgressPromise,
+  ]);
 
   // ! This clause enables us to not have to use optional chain in UserProgress props
   if (!userProgress || !userProgress.activeCourse) return redirect('/courses');
@@ -27,6 +31,11 @@ const LearnPage = async () => {
       </SickyWrapper>
       <FeedWrapper>
         <Header title={userProgress.activeCourse.title} />
+        {units.map((unit) => (
+          <div key={unit.id} className="mb-10">
+            {JSON.stringify(unit)}
+          </div>
+        ))}
       </FeedWrapper>
     </div>
   );
