@@ -14,6 +14,11 @@ const main = async () => {
 
     await db.delete(schema.courses);
     await db.delete(schema.userProgress);
+    await db.delete(schema.units);
+    await db.delete(schema.lessons);
+    await db.delete(schema.challenges);
+    await db.delete(schema.challengeOptions);
+    await db.delete(schema.challengeProgress);
 
     await db.insert(schema.courses).values([
       { id: 1, title: 'German', imageSrc: './de.svg' },
@@ -21,6 +26,63 @@ const main = async () => {
       { title: 'English', imageSrc: './us.svg' },
       { title: 'Italian', imageSrc: './it.svg' },
       { title: 'Spanish', imageSrc: './es.svg' },
+    ]);
+
+    await db.insert(schema.units).values([
+      {
+        id: 1, //German
+        courseId: 1,
+        title: 'Unite 1',
+        description: 'Learn the basics of German',
+        order: 1,
+      },
+    ]);
+
+    await db.insert(schema.lessons).values([
+      {
+        id: 1,
+        unitId: 1, // Unit 1 (Learn the basics...)
+        order: 1,
+        title: 'Nouns',
+      },
+    ]);
+
+    await db.insert(schema.challenges).values([
+      {
+        id: 1,
+        lessonId: 1, // Nouns
+        type: 'SELECT',
+        order: 1,
+        question: 'Which one of these is the "man"?',
+      },
+    ]);
+
+    await db.insert(schema.challengeOptions).values([
+      // ! All options for question above
+      {
+        id: 1,
+        challengeId: 1,
+        imageSrc: '/man.svg',
+        correct: true,
+        text: 'der Mann',
+        audioSrc: '/de_man.mp3',
+      },
+      {
+        id: 2,
+        challengeId: 1,
+        imageSrc: '/woman.svg',
+        correct: true,
+        text: 'die Frau',
+        audioSrc: '/de_woman.mp3',
+      },
+      {
+        id: 3,
+        challengeId: 1,
+        imageSrc: '/robot.svg',
+        correct: true,
+        text: 'der Roboter',
+        audioSrc: '/de_robot.mp3',
+      },
     ]);
 
     console.log('Seeding finished');
