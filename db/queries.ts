@@ -2,7 +2,7 @@ import db from '@/db/drizzle';
 import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import { cache } from 'react';
-import { courses, units, userProgress } from './schema';
+import { challengeProgress, courses, units, userProgress } from './schema';
 
 // ? cache makes it not care if it's called in many places throught the code. It calls the DB only once
 export const getUserProgress = cache(async () => {
@@ -23,12 +23,14 @@ export const getUserProgress = cache(async () => {
 });
 
 export const getUnits = cache(async () => {
+  const { userId } = await auth();
   const userProgress = await getUserProgress();
 
-  if (!userProgress?.activeCourse) {
+  if (!userId || !userProgress?.activeCourse) {
     return [];
   }
 
+  // TODO: Confirm wether order is needed
   const data = await db.query.units.findMany({
     where: eq(units.courseId, userProgress.activeCourseId),
     with: {
@@ -36,7 +38,9 @@ export const getUnits = cache(async () => {
         with: {
           challenges: {
             with: {
-              challengeProgress: true,
+              challengeProgress: {
+                where: eq(challengeProgress.userId, userId),
+              },
             },
           },
         },
