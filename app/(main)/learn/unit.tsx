@@ -1,5 +1,6 @@
 import { lessons, units } from '@/db/schema';
 import { UnitBanner } from './unit-banner';
+import { LessonButton } from './lesson-button';
 
 type Lesson = typeof lessons.$inferSelect;
 
@@ -25,6 +26,25 @@ export const Unit = ({
   return (
     <>
       <UnitBanner title={title} description={description} />
+      <div className="flex items-center flex-col relative">
+        {lessons.map((lesson, index) => {
+          const isCurrent = lesson.id === activeLesson?.id;
+          const isLocked = !lesson.completed && !isCurrent;
+
+          return (
+            <LessonButton
+              key={lesson.id}
+              id={lesson.id}
+              index={index}
+              totalCount={lessons.length - 1}
+              // current={isCurrent}
+              current={true} // TODO: Remove hardcode value
+              locked={isLocked}
+              percentage={activeLessonPercentage}
+            />
+          );
+        })}
+      </div>
     </>
   );
 };
