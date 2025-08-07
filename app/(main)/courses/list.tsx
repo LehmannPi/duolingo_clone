@@ -22,7 +22,7 @@ export const List = ({ activeCourseId, courses }: Props) => {
     if (pending) return;
 
     if (id == activeCourseId) {
-      return router.push('/earn');
+      return router.push('/learn');
     }
 
     startTransition(() => {
