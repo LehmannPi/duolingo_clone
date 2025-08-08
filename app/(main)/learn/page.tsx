@@ -6,6 +6,7 @@ import { UserProgress } from '@/components/user-progress';
 import { getUnits, getUserProgress } from '@/db/queries';
 
 import Header from './header';
+import { Unit } from './unit';
 
 const LearnPage = async () => {
   const unitsDataPromise = getUnits();
@@ -36,12 +37,13 @@ const LearnPage = async () => {
             <Unit
               id={unit.id}
               order={unit.order}
+              title={unit.title}
               description={unit.description}
               lessons={unit.lessons}
-              activeLesson={null}
+              activeLesson={undefined}
               activeLessonPercentage={0}
             />
-            {JSON.stringify(unit)}
+            {/* {JSON.stringify(unit)} */}
           </div>
         ))}
       </FeedWrapper>
