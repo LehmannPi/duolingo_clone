@@ -81,6 +81,7 @@ export function LessonButton({
                 size={'rounded'}
                 variant={locked ? 'locked' : 'secondary'}
                 className="h-[70px] w-[70px] border-b-8"
+                // className="absolute top-2 active:top-4 h-[78px] w-[70px] border-b-8 active:h-[70px] transtion-all"
               >
                 <Icon
                   className={cn(

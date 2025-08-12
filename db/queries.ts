@@ -57,6 +57,9 @@ export const getUnits = cache(async () => {
   // ! Heavy computation on the backend so the code can easily use the boolean completed
   const normalizeData = data.map((unit) => {
     const lessonsWithCompletedStatus = unit.lessons.map((lesson) => {
+      if (lesson.challenges.length === 0) {
+        return { ...lesson, completed: false }; // all lessons have to have challenges
+      }
       const allCompletedChallenges = lesson.challenges.every((challenge) => {
         return (
           challenge.challengeProgress &&
