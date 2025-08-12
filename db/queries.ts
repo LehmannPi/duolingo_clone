@@ -2,7 +2,13 @@ import db from '@/db/drizzle';
 import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import { cache } from 'react';
-import { challengeProgress, courses, units, userProgress } from './schema';
+import {
+  challengeProgress,
+  courses,
+  lessons,
+  units,
+  userProgress,
+} from './schema';
 
 // ? cache makes it not care if it's called in many places throught the code. It calls the DB only once
 export const getUserProgress = cache(async () => {
@@ -113,11 +119,14 @@ export const getCourseProgress = cache(async () => {
   const firstUncompletedLesson = unitsInActiveCourse
     .flatMap((unit) => unit.lessons)
     .find((lesson) => {
+      // TODO: If something does not work, check last clause
       return lesson.challenges.some((challenge) => {
         return (
           !challenge.challengeProgress ||
-          challenge.challengeProgress.length === 0 // ||
-          // challenge.challengeProgress.some((progress) => !progress.completed)
+          challenge.challengeProgress.length === 0 ||
+          challenge.challengeProgress.some(
+            (progress) => progress.completed === false
+          )
         );
       });
     });
@@ -125,5 +134,61 @@ export const getCourseProgress = cache(async () => {
   return {
     activeLesson: firstUncompletedLesson,
     activeLessonId: firstUncompletedLesson?.id,
+  };
+});
+
+export const getLesson = cache(async (id?: number) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const courseProgress = await getCourseProgress();
+
+  const lessonId = id || courseProgress?.activeLessonId;
+  if (!lessonId) {
+    return null;
+  }
+
+  const data = await db.query.lessons.findFirst({
+    where: eq(lessons.id, lessonId),
+    with: {
+      // unit: {
+      //   with: {
+      //     course: true,
+      //   },
+      // },
+      challenges: {
+        orderBy: (challenges, { asc }) => [asc(challenges.order)],
+        with: {
+          challengeOptions: true,
+          challengeProgress: {
+            where: eq(challengeProgress.userId, userId),
+          },
+        },
+      },
+    },
+  });
+
+  if (!data || !data.challenges) {
+    return null;
+  }
+
+  const normalizedChallenges = data.challenges.map((challenge) => {
+    // TODO: If something does not work, check last clause
+    const completed =
+      challenge.challengeProgress &&
+      challenge.challengeProgress.length > 0 &&
+      challenge.challengeProgress.every((progress) => progress.completed);
+    return {
+      ...challenge,
+      completed,
+    };
+  });
+
+  return {
+    ...data,
+    challenges: normalizedChallenges,
   };
 });
