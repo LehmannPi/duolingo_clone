@@ -13,8 +13,8 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="max-w-[998px] mx-auto flex flex-1 w-full flex-col lg:flex-row items-center justify-center p-4 gap-2">
-      <div className="relative w-[240px] h-[240px] lg:w-[424px] lg:h-[424px] mb-8 lg:mb-0">
+    <div className="max-w-[998px] mx-auto flex flex-1 w-full flex-col lg:flex-row items-center justify-center p-4 gap-2 relative">
+      <div className="relative w-[240px] h-[240px] lg:w-[424px] lg:h-[424px] mb-8 lg:mb-0 z-10">
         <Image src={'/hero.svg'} fill alt="Hero" />
       </div>
       <div className="flex flex-col items-center gap-y-8">
@@ -39,13 +39,25 @@ export default function Home() {
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <Button size="lg" variant="secondary" className="w-full" asChild>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="w-full z-20"
+                asChild
+              >
                 <Link href={'/learn'}>Continue Learning</Link>
               </Button>
             </SignedIn>
           </ClerkLoaded>
         </div>
       </div>
+      <Image
+        className="lg:absolute bottom-0 md:bottom-[20px] lg:bottom-[40px] z-0"
+        alt="Under development"
+        src={'/under-construction.png'}
+        height={117}
+        width={239}
+      />
     </div>
   );
 }
