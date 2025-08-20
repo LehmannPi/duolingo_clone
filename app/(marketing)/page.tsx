@@ -54,7 +54,7 @@ export default function Home() {
       <Image
         className="lg:absolute bottom-0 md:bottom-[20px] lg:bottom-[40px] z-0"
         alt="Under development"
-        src={'/under-construction.png'}
+        src={'/under-dev-sign.svg'}
         height={117}
         width={239}
       />
