@@ -52,7 +52,7 @@ export default function Home() {
         </div>
       </div>
       <Image
-        className="lg:absolute bottom-0 md:bottom-[20px] lg:bottom-[40px] z-0"
+        className="lg:absolute bottom-0 md:bottom-[20px] lg:bottom-[40px] z-20"
         alt="Under development"
         src={'/under-dev-sign.svg'}
         height={117}
