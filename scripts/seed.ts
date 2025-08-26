@@ -32,7 +32,7 @@ const main = async () => {
       {
         id: 1, //German
         courseId: 1,
-        title: 'Unite 1',
+        title: 'Unit 1',
         description: 'Learn the basics of German',
         order: 1,
       },
@@ -107,7 +107,7 @@ const main = async () => {
         imageSrc: '/man.svg',
         correct: true,
         text: 'der Mann',
-        audioSrc: '/de_man.mp3',
+        audioSrc: '/brian-de-the_man.mp3',
       },
       {
         id: 2,
@@ -115,7 +115,7 @@ const main = async () => {
         imageSrc: '/woman.svg',
         correct: true,
         text: 'die Frau',
-        audioSrc: '/de_woman.mp3',
+        audioSrc: '/alice-de-the_woman.mp3',
       },
       {
         id: 3,
@@ -123,7 +123,7 @@ const main = async () => {
         imageSrc: '/robot.svg',
         correct: true,
         text: 'der Roboter',
-        audioSrc: '/de_robot.mp3',
+        audioSrc: '/callum-de-the_robot.mp3',
       },
     ]);
 
