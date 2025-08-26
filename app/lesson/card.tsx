@@ -1,6 +1,8 @@
 import { challenges } from '@/db/schema';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useCallback } from 'react';
+import { useAudio, useKey } from 'react-use';
 
 type Props = {
   id: number;
@@ -9,7 +11,7 @@ type Props = {
   text: string;
   shortcut: string;
   selected?: boolean;
-  onClick?: () => void;
+  onClick: () => void;
   disabled?: boolean;
   status?: 'correct' | 'wrong' | 'none';
   type: (typeof challenges.$inferSelect)['type'];
@@ -27,6 +29,18 @@ export const Card = ({
   selected,
   status,
 }: Props) => {
+  const [audio, _, controls] = useAudio({ src: audioSrc || '' });
+
+  // const [] = useKey();
+  const handleClick = useCallback(() => {
+    if (disabled) return;
+
+    controls.play();
+    onClick();
+  }, [disabled, onClick, controls]);
+
+  useKey(shortcut, handleClick, {}, [handleClick]);
+
   return (
     <div
       className={cn(
@@ -41,8 +55,9 @@ export const Card = ({
         disabled && 'pointer-events-none hover:bg-white',
         type === 'ASSIST' && 'lg:p-3 w-full'
       )}
-      onClick={() => {}}
+      onClick={handleClick}
     >
+      {audio}
       {imageSrc && (
         <div className="relative aspect-square mb-4 max-h-[80px] lg:max-h-[150px] w-full">
           <Image src={imageSrc} fill alt={text} />
