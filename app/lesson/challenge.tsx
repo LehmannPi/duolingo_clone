@@ -3,10 +3,16 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 import { Card } from './card';
 
+export enum ChallengeStatus {
+  Correct = 'correct',
+  Wrong = 'wrong',
+  None = 'none',
+}
+
 type Props = {
   options: (typeof challengeOptions.$inferSelect)[];
   onSelect: (id: number) => void;
-  status: 'correct' | 'wrong' | 'none';
+  status: ChallengeStatus;
   selectedOption?: number;
   isDisabled?: boolean;
   type: (typeof challenges.$inferSelect)['type'];
