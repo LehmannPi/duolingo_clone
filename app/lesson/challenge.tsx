@@ -7,6 +7,7 @@ export enum ChallengeStatus {
   Correct = 'correct',
   Wrong = 'wrong',
   None = 'none',
+  Completed = 'completed',
 }
 
 type Props = {
